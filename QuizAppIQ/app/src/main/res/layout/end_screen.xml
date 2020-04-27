@@ -37,7 +37,7 @@
 
     <TextView
         android:id="@+id/text2"
-        android:textSize="100sp"
+        android:textSize="90sp"
         android:text="@string/genius"
         android:textColor="@color/colorAccent"
         android:layout_width="wrap_content"
@@ -46,5 +46,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text1" />
+
+    <TextView
+        android:id="@+id/text3"
+        android:textSize="60sp"
+        android:text="@string/thanks_for_taking_this_quiz"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/horizontal_line"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

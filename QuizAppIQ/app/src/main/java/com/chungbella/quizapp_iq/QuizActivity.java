@@ -71,7 +71,7 @@ public class QuizActivity extends AppCompatActivity {
         choices.add("courageous-cowardly-timid-trustworthy");
 
         answers = new ArrayList<String>();
-        answers.add("Ocean");
+        answers.add("Continent");
         answers.add("100");
         answers.add("teachers are not attendees");
         answers.add("courageous");
