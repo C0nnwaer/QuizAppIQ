@@ -30,7 +30,7 @@
         android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/_00_30"
+        android:text="@string/_00_20"
         android:textSize="60sp"
         android:textColor="@color/colorAccent"
         app:layout_constraintLeft_toLeftOf="parent"

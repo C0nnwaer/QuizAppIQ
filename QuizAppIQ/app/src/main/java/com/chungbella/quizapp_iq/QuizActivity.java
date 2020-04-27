@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ public class QuizActivity extends AppCompatActivity {
     List<String> answers;
 
     TextView que;
+    TextView timer;
 
     RadioButton choice1;
     RadioButton choice2;
@@ -33,9 +35,12 @@ public class QuizActivity extends AppCompatActivity {
 
     int current_question;
     int correct;
+    int time_left;
 
     SharedPreferences myPreferences;
     SharedPreferences.Editor prefsEditor;
+
+    CountDownTimer count_down_timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,18 +81,34 @@ public class QuizActivity extends AppCompatActivity {
         answers.add("teachers are not attendees");
         answers.add("courageous");
 
+        timer = findViewById(R.id.timer);
+        time_left = 20;
+
+        count_down_timer = new CountDownTimer(20000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                time_left -=1;
+                String time = "00:" + time_left;
+                timer.setText(time);
+            }
+
+            public void onFinish() {
+                timer.setText("Time's Up!");
+                nextQuestion(true);
+            }
+        }.start();
 
         Button nextButton = findViewById(R.id.next_button);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextQuestion();
+                nextQuestion(false);
             }
         });
     }
 
-    private void nextQuestion() {
-        if(choice1.isChecked() || choice2.isChecked() || choice3.isChecked() || choice4.isChecked()) {
+    private void nextQuestion(boolean time) {
+        if(!time && (choice1.isChecked() || choice2.isChecked() || choice3.isChecked() || choice4.isChecked())) {
             RadioButton selected = findViewById(rbg.getCheckedRadioButtonId());
             String chosenAnswer = "" + selected.getText();
             if(chosenAnswer.equals(answers.get(current_question))){
@@ -108,6 +129,57 @@ public class QuizActivity extends AppCompatActivity {
                 choice2.setText(four_choices[1]);
                 choice3.setText(four_choices[2]);
                 choice4.setText(four_choices[3]);
+
+                count_down_timer.cancel();
+                timer.setText("00:20");
+                time_left = 20;
+                count_down_timer = new CountDownTimer(20000, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                        time_left -=1;
+                        String time = "00:" + time_left;
+                        timer.setText(time);
+                    }
+
+                    public void onFinish() {
+                        timer.setText("Time's Up!");
+                        nextQuestion(true);
+                    }
+                }.start();
+            }
+        }
+        else if(time){
+            current_question += 1;
+            if (current_question > 3) {
+                prefsEditor.putInt("score", correct);
+                prefsEditor.apply();
+
+                Intent intent = new Intent(QuizActivity.this, EndActivity.class);
+                startActivity(intent);
+            } else {
+                que.setText(questions.get(current_question - 1));
+                String[] four_choices = choices.get(current_question - 1).split("-");
+                choice1.setText(four_choices[0]);
+                choice2.setText(four_choices[1]);
+                choice3.setText(four_choices[2]);
+                choice4.setText(four_choices[3]);
+
+                count_down_timer.cancel();
+                timer.setText("00:20");
+                time_left = 20;
+                count_down_timer = new CountDownTimer(20000, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                        time_left -=1;
+                        String time = "00:" + time_left;
+                        timer.setText(time);
+                    }
+
+                    public void onFinish() {
+                        timer.setText("Time's Up!");
+                        nextQuestion(true);
+                    }
+                }.start();
             }
         }
         else {
